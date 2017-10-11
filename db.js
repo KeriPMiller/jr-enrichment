@@ -6,18 +6,18 @@ const db = new Sequelize('postgres://localhost/juniorenrichment', {
 });
 
 
-const Student = db.define("student" , {
-	/* STUDENT MODEL CODE HERE */
+const Student = db.define("student", {
+  /* STUDENT MODEL CODE HERE */
   name: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  gpa : {
+  gpa: {
     type: Sequelize.FLOAT
   },
-  grade : {
+  grade: {
     type: Sequelize.VIRTUAL,
-    get () {
+    get() {
       return ['F', 'D', 'C', 'B', 'A'][Math.floor(this.gpa)]
     }
   }
@@ -25,23 +25,31 @@ const Student = db.define("student" , {
 
 
 Student.findPerfectScores = () => {
-   return Student.findAll({
-    where: {grade: 'A'}
+  return Student.findAll({
+    where: {
+      grade: 'A'
+    }
   });
 }
 
 
 const Teacher = db.define('teacher', {
-	/* TEACHER MODEL CODE HERE */
+  /* TEACHER MODEL CODE HERE */
   name: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  subject:{
-    type: Sequelize.STRING,
+  subject: {
+    type: Sequelize.STRING
   }
-
 });
 
+Teacher.hasMany(Student);
+Student.belongsTo(Teacher);
 
-module.exports = {db, Student, Teacher}
+
+module.exports = {
+  db,
+  Student,
+  Teacher
+}
