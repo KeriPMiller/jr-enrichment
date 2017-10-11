@@ -17,7 +17,7 @@ const Student = db.define("student", {
   },
   grade: {
     type: Sequelize.VIRTUAL,
-    get() {
+    get: function() {
       return ['F', 'D', 'C', 'B', 'A'][Math.floor(this.gpa)]
     }
   }

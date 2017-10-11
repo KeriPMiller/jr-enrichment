@@ -45,12 +45,38 @@ app.get('/teachers', (req, res, next) => {
 
 app.delete('/student/:studentId', (req, res, next) => {
 	Student.destroy(
-		{where:{id:req.params.studentId}
+		{where: {id: req.params.studentId}
 	})
-	.then(() => res.status(202))
+	.then((affectedRow) => res.status(202))
 })
-db.sync()
+db.sync({force:true})
 .then(() => {
 	console.log('db synced')
 	app.listen(PORT, () => console.log(`server listening on port ${PORT}`))
+
+	const students = Promise.all([
+		{name: 'Anita', gpa: 3.2},
+		{name: 'Maria', gpa: 4.0},
+		{name: 'Tony', gpa: 2.7},
+		{name: 'Bernardo', gpa: 0},
+	].map(data => Student.create(data)))
+
+	const teachers = Promise.all([
+		{name: 'John', subject: 'Math'},
+		{name: 'Lueck', subject: 'English'}
+	].map(data => Teacher.create(data)))
+
+	Promise.all([students, teachers])
+		.then(([
+			[anita, maria, tony, bernardo],
+			[john, lueck],
+		]) => Promise.all([
+			anita.setTeacher(john),
+			tony.setTeacher(lueck),
+			maria.setTeacher(lueck),
+			john.addStudent(bernardo),
+		]))
+		.then(() => {
+			console.log('database seeded.')
+		})
 });
