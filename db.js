@@ -21,13 +21,21 @@ const Student = db.define("student", {
       return ['F', 'D', 'C', 'B', 'A'][Math.floor(this.gpa)]
     }
   }
+},{
+//   // getter, instance class methods hooks in their own objs
+//   getterMethods : {
+//     function findPerfectScores(){
+//       return Student.findAll({
+//         where: {gpa: 4}
+//       });
+//     }
 })
 
 
-Student.findPerfectScores = () => {
+Student.findPerfectScores = function() {
   return Student.findAll({
     where: {
-      grade: 'A'
+      gpa: 4
     }
   });
 }

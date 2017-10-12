@@ -30,8 +30,8 @@ X- GET all teachers and return them in json
 X- GET student by ID # and return a json of that student
 X- GET teacher by ID # and return a json of that teacher
 X- GET all students for a specific teacher's ID #
-- DELETE a student and return a status code of 202
-- UPDATE a student's teacher and return a status code of 204
+X- DELETE a student and return a status code of 202
+X- UPDATE a student's teacher and return a status code of 204
 ```
 
 

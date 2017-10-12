@@ -43,12 +43,21 @@ app.get('/teachers', (req, res, next) => {
 	.then( teachers => res.json(teachers))
 })
 
+app.put('/student/:studentId/:newTeacherId', (req, res, next) => {
+	const newTeacherId = req.params.newTeacherId
+	Student.findById(req.params.studentId)
+	.then( student => student.update({teacherId: +newTeacherId})
+	.then(()=> res.sendStatus(204))
+)
+})
+
 app.delete('/student/:studentId', (req, res, next) => {
 	Student.destroy(
 		{where: {id: req.params.studentId}
 	})
-	.then((affectedRow) => res.status(202))
+	.then((affectedRow) => res.sendStatus(202))
 })
+
 db.sync({force:true})
 .then(() => {
 	console.log('db synced')
